@@ -7,7 +7,7 @@ https://www.aparat.com/v/35zIX
 String inputString = "";         // a string to hold incoming data
 boolean stringComplete = false;  // whether the string is complete
 String commandString = "";
-
+const int pin_LED = 10; 
 
 int EndOfCommend;
 int EndOfdata;
@@ -15,9 +15,7 @@ int EndOfdata;
 
 void setup() {
  Serial.begin(9600); 
- initDisplay();
- pinMode(pin_BL, OUTPUT); 
- digitalWrite(pin_BL, HIGH); // sets the digital pin BL on
+ pinMode(pin_LED,OUTPUT);
 }
 void loop() {
    if(Serial.available()) serialEvent();
@@ -26,30 +24,17 @@ void loop() {
       stringComplete = false;
       getCommand();
       
-      if(commandString.equals("Back_Light"))
+      if(commandString.equals("LED"))
       {
         String text = getData();
         if(text.equals("ON")){
-          digitalWrite(pin_BL, HIGH); // sets the digital pin BL on
+         digitalWrite(pin_LED,HIGH);
         }else if(text.equals("OFF"))
         {
-           digitalWrite(pin_BL, LOW);  // sets the digital pin BL off          
+         digitalWrite(pin_LED,LOW);        
         }
       }      
-      else if(commandString.equals("LINE1"))
-      {
-        String text = getData();
-        printText(text,1);
-      }
-       else if(commandString.equals("LINE2"))
-      {
-        String text = getData();
-        printText(text,2);
-      }
-      else if(commandString.equals("CLEAR"))
-      {
-        lcd.clear();
-      }
+     
     inputString = "";
   }
   delay(100);
@@ -58,14 +43,6 @@ void loop() {
 
 
 
-void initDisplay()
-{
- lcd.begin(16, 2);
- lcd.setCursor(0,0);
- lcd.print("  Smart Rabbit ");
- lcd.setCursor(0,1);
- lcd.print("  Serial Port  ");
-}
 
 
 
@@ -75,6 +52,8 @@ void getCommand()
   {  
      EndOfCommend=inputString.indexOf(',');
      commandString = inputString.substring(1,EndOfCommend);
+     
+     Serial.print("Command:");
      Serial.println(commandString);
   }
 }
@@ -85,23 +64,13 @@ void getCommand()
 String getData()
 {
   String value = inputString.substring(EndOfCommend+1,inputString.length()-2);
+  Serial.print("Data:");
   Serial.println(value);
+  Serial.println("---------------------------");
   return value;
 }
 
-void printText(String text,int index)
-{
-  
-    if(index==1)
-    {
-      lcd.setCursor(0,0);
-      lcd.print(text);
-    }else if(index==2)
-    {
-      lcd.setCursor(0,1);
-      lcd.print(text);
-    }
-}
+
 
 void serialEvent() {
   while (Serial.available() && stringComplete == false) {
@@ -109,6 +78,7 @@ void serialEvent() {
     char inChar = (char)Serial.read();
     // add it to the inputString:
     inputString += inChar;
+    Serial.print(inChar);
     // if the incoming character is a newline, set a flag
     // so the main loop can do something about it:
     if (inChar == '\n') {
