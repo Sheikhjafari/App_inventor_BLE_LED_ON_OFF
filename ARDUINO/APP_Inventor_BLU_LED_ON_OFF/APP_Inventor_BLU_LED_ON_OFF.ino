@@ -1,6 +1,7 @@
 /*
-Arduino LCD Keypad Shield 
-modified on 21 Oct 2019
+Interface an Android smartphone with an Arduino via Bluetooth 
+to control an LED from your phone
+modified on 22 Oct 2019
 by Alireza Sheikhjafari @ Rabbit Channel
 https://www.aparat.com/v/35zIX
 */
