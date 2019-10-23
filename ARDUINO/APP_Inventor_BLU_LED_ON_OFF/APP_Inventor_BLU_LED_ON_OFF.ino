@@ -8,11 +8,11 @@ https://www.aparat.com/v/35zIX
 String inputString = "";         // a string to hold incoming data
 boolean stringComplete = false;  // whether the string is complete
 String commandString = "";
-const int pin_LED = 10; 
 
 int EndOfCommend;
 int EndOfdata;
 
+const int pin_LED = 10; 
 
 void setup() {
  Serial.begin(9600); 
